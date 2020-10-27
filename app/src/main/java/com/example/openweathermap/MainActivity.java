@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutionException;
 public class MainActivity extends AppCompatActivity {
 
     private String address;
-    private String result;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,16 +28,10 @@ public class MainActivity extends AppCompatActivity {
         address = "http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=1d2fcf0922433a497b5fb9fe3e2c3742";
 
         DownloadTaskJSON taskJSON = new DownloadTaskJSON();
-        try {
-            result = taskJSON.execute(address).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
-        if (result != null)
-            Log.i("!@#", result);
+         taskJSON.execute(address);
+
+
     }
 
     static class DownloadTaskJSON extends AsyncTask<String, Void, String> {
@@ -64,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                         line = bufferedReader.readLine();
                     }
                     return strBuffer.toString();
-           
+
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -77,6 +71,12 @@ public class MainActivity extends AppCompatActivity {
 
 
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Log.i("!@#", s);
         }
     }    // end of DownloadTaskJSON
 
